@@ -1,15 +1,16 @@
-from typing import Union
-
 from fastapi import FastAPI
+from models import Base
+from database import engine
+from routers import user
 
 app = FastAPI()
 
-
-@app.get("/")
-async def read_root():
-    return {"Hello": "World"}
+Base.metadata.create_all(bind=engine)
 
 
-@app.get("/items/{item_id}")
-async def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+@app.get("/healthy")
+def health_check():
+    return {'status': 'Healthy'}
+
+
+app.include_router(user.router)
