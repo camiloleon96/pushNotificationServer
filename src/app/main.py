@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from models import Base
 from database import engine
-from routers import user
+from routers import user, subscription
 
 app = FastAPI()
 
@@ -14,3 +14,4 @@ def health_check():
 
 
 app.include_router(user.router)
+app.include_router(subscription.router)

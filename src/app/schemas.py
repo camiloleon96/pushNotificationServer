@@ -48,7 +48,7 @@ class SubscriptionBase(BaseModel):
     }
 
 
-class Subscription(SubscriptionBase):
+class SubscriptionResponse(SubscriptionBase):
     id: str
     startDate: str
     endDate: str
