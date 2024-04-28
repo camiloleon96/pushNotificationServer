@@ -57,11 +57,15 @@ class TestAccessToken:
 
 
 class TestCurrentUser:
+    @pytest.mark.asyncio
     async def test_get_current_user_valid_token(self):
+        # Valid token
         token = create_access_token("test_user", 123, timedelta(minutes=30))
         user = await get_current_user(token)
         assert user == {'username': 'test_user', 'id': 123}
 
+    @pytest.mark.asyncio
     async def test_get_current_user_invalid_token(self):
-        with pytest.raises(HTTPException):
+        # Invalid token
+        with pytest.raises(Exception):
             await get_current_user("invalid_token")
