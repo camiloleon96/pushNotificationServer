@@ -1,10 +1,15 @@
 version: "3.8"
 services:
-  api:
+  app:
     container_name: fastapi_container
     build: ./src
     ports:
       - "8001:80"
+    networks:
+      - network1
+    depends_on:
+      - db
+  
   db:
     container_name: postgres_container
     image: postgres
@@ -24,6 +29,9 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
       - "5432:5432"
+    networks:
+      network1:
+        ipv4_address: 172.18.0.22
 
   pgadmin:
     container_name: pgadmin4_container
@@ -34,3 +42,21 @@ services:
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
     ports:
       - "5050:80"
+    networks:
+      - network1
+
+  redis:
+    container_name: redis
+    image: redis:6.2-alpine
+    networks:
+      - network1
+
+networks:
+    network1:
+      ipam:
+        driver: default
+        config:
+          - subnet: 172.18.0.0/16
+
+volumes:
+  tmpfs:

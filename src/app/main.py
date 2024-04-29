@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from models import Base
+from database import Base
 from database import engine
 from routers import user, subscription
 
