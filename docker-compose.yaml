@@ -50,5 +50,36 @@ services:
       db:
         condition: service_healthy
 
+  celery_worker:
+    container_name: celery_worker
+    build: ./src/worker
+    command: celery -A celery_worker.celery worker --loglevel=info
+    volumes:
+      - ./src/worker:/app
+    environment:
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    networks:
+      - network1
+    depends_on:
+      - app
+      - redis
+
+  flower:
+    container_name: flower
+    build: ./src/worker
+    command: celery -A celery_worker.celery flower --port=5555
+    ports:
+      - 5556:5555
+    networks:
+      - network1
+    environment:
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
+    depends_on:
+      - app
+      - redis
+      - celery_worker
+
 networks:
     network1:
