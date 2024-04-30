@@ -31,7 +31,6 @@ services:
       - "5432:5432"
     networks:
       network1:
-        ipv4_address: 172.18.0.22
 
   pgadmin:
     container_name: pgadmin4_container
@@ -53,10 +52,6 @@ services:
 
 networks:
     network1:
-      ipam:
-        driver: default
-        config:
-          - subnet: 172.18.0.0/16
 
 volumes:
   tmpfs:
