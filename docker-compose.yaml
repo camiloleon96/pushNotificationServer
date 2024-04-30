@@ -22,6 +22,12 @@ services:
       - "5432:5432"
     networks:
       network1:
+    healthcheck:
+      test: pg_isready -U postgres
+      interval: 1s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   pgadmin:
     container_name: pgadmin4_container
@@ -50,7 +56,8 @@ services:
     networks:
       - network1
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 networks:
     network1:
