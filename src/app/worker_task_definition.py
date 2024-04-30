@@ -13,6 +13,5 @@ celery.conf.result_backend = os.getenv("CELERY_RESULT_BACKEND")
 
 @celery.task(name="create_task")
 def create_task(message):
-    print('*************')
     print(message)
     return 'success'
