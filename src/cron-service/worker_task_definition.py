@@ -12,8 +12,7 @@ celery.conf.result_backend = os.getenv("CELERY_RESULT_BACKEND")
 
 
 @celery.task(name="create_push_notification")
-def create_push_notification(user_name, subscription_id):
-    message = "congratulations " + user_name + \
-        " you have succesfully activated your new plan " + subscription_id
+def create_push_notification(user_id, message):
+    print("Sending push notification to... " + user_id)
     print(message)
     return message

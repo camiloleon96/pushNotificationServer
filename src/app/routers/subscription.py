@@ -64,8 +64,12 @@ async def create_subscription(subscription: SubscriptionBase, user: user_depende
             startDate=start_date,
             endDate=end_date
         )
+
+        message = "congratulations " + user.get("username") + \
+            " you have succesfully activated your new plan: " + subscription_id
+
         create_push_notification.delay(
-            user.get('username'), subscription.planId)
+            subscription.userId, message)
 
         return new_subscription
 
