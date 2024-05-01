@@ -9,6 +9,7 @@ import uuid
 from datetime import datetime, timedelta
 from pydantic import ValidationError
 from routers.user import get_current_user
+from worker_task_definition import create_push_notification
 
 router = APIRouter(
     prefix='/subscription',
@@ -29,11 +30,11 @@ user_dependency = Annotated[dict, Depends(get_current_user)]
 
 
 def calculate_end_date(start_date):
-    end_date = start_date + timedelta(days=30)
+    end_date = start_date + timedelta(minutes=15)
     return end_date.strftime("%Y-%m-%d %H:%M:%S.%f+00")
 
 
-@router.post("/api/subscriptions", response_model=SubscriptionResponse, status_code=201)
+@router.post("/", response_model=SubscriptionResponse, status_code=201)
 async def create_subscription(subscription: SubscriptionBase, user: user_dependency, db: db_dependency):
     print(user)
     if user is None or user.get('id') != subscription.userId:
@@ -63,6 +64,9 @@ async def create_subscription(subscription: SubscriptionBase, user: user_depende
             startDate=start_date,
             endDate=end_date
         )
+        create_push_notification.delay(
+            user.get('username'), subscription.planId)
+
         return new_subscription
 
     except ValidationError as e:
