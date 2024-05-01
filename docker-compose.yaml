@@ -81,5 +81,15 @@ services:
       - redis
       - celery_worker
 
+  cron-service:
+    build: ./src/cron-service
+    command: ["python", "-m", "cron_service.py"]
+    volumes:
+      - ./src/cron-service:/app
+    networks:
+      - network1
+    depends_on:
+      - db
+
 networks:
     network1:
