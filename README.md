@@ -19,6 +19,10 @@
    - Authenticate yourself by clicking the lock icon.
    - Use the `POST` method on `api/subscription` to add a subscription.
   
-5. **Access Flower Dashboard:**
-   - Visit [http://localhost:5556](http://localhost:5556) to access the Flower dashboard. Here, you can monitor the status of the worker and the state of the events (push notifications).
+5. **Access the Flower Dashboard:**
+   
+   <img src="./docs/flower_dashboard.png" alt="High-level Design" width="700"/>
+   
+   - Visit [http://localhost:5556](http://localhost:5556) to access the Flower dashboard. Here, you can monitor the status of the worker and the state of the events a.k.a. tasks (push notifications).
+  
 
